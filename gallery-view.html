@@ -28,7 +28,7 @@
       <p class="sub" id="gallerySub"></p>
       <div class="gallery-grid" id="galleryGrid"></div>
       <div class="empty" id="galleryEmpty" style="display:none">
-        // 图库为空<br>在 gallery/ 目录下放入图片（001.webp, 002.webp…），<br>然后在 data/gallery.js 中更新 TOTAL 数字即可。
+        图库为空<br>在 gallery/ 目录下放入图片（1.jpg, 2.png…），<br>然后更新 data/gallery.js 中的 total 即可。
       </div>
     </div>
   </main>
@@ -54,22 +54,57 @@
 
     var grid = document.getElementById("galleryGrid");
     var empty = document.getElementById("galleryEmpty");
+    var EXTS = ["jpg", "jpeg", "png", "webp", "gif", "bmp"];
 
     if (info.total === 0) {
       empty.style.display = "";
       grid.style.display = "none";
     } else {
       for (var i = 1; i <= info.total; i++) {
-        var ext = info.ext || "webp";
-        var src = info.dir + i + "." + ext;
         var item = document.createElement("div");
         item.className = "gallery-item";
-        item.innerHTML = '<img src="' + src + '" alt="' + i + '" loading="lazy" />';
-        item.addEventListener("click", function(s) {
-          return function() { openLightbox(s); };
-        }(src));
         grid.appendChild(item);
+        // 自动探测图片格式
+        tryLoadImage(item, i, 0);
       }
+    }
+
+    function tryLoadImage(item, num, extIdx) {
+      if (extIdx >= EXTS.length) {
+        item.classList.add("broken");
+        item.textContent = "?";
+        return;
+      }
+      var ext = EXTS[extIdx];
+      var src = info.dir + num + "." + ext;
+      var img = new Image();
+      img.onload = function () {
+        item.innerHTML = '<img src="' + src + '" alt="' + num + '" loading="lazy" />';
+        item.addEventListener("click", function () { openLightbox(src); });
+        initTilt(item);
+      };
+      img.onerror = function () {
+        tryLoadImage(item, num, extIdx + 1);
+      };
+      img.src = src;
+    }
+
+    // 鼠标倾斜 + 光效
+    function initTilt(el) {
+      el.addEventListener("mousemove", function (e) {
+        var rect = el.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var cx = rect.width / 2, cy = rect.height / 2;
+        var rx = (y - cy) / cy * 6;  // 上下倾斜
+        var ry = (x - cx) / cx * -6;  // 左右倾斜
+        el.style.transform = "perspective(600px) rotateX(" + rx + "deg) rotateY(" + ry + "deg) scale(1.02)";
+        el.style.setProperty("--mx", (x / rect.width * 100) + "%");
+        el.style.setProperty("--my", (y / rect.height * 100) + "%");
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transform = "perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)";
+      });
     }
 
     // Lightbox

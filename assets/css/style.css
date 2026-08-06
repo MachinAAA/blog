@@ -440,24 +440,44 @@ a:hover { color: var(--accent-3); }
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .gallery-view .sub { color: var(--text-3); margin: 0 0 34px; font-size: 14px; }
+
+/* 瀑布流列布局 — 全尺寸平铺 */
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
+  columns: 3 280px;
+  column-gap: 18px;
 }
 .gallery-item {
-  aspect-ratio: 1; overflow: hidden; border-radius: var(--radius);
-  cursor: pointer; position: relative; border: 1px solid var(--border);
-  transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s;
-  background: rgba(255,255,255,.3);
+  break-inside: avoid; margin-bottom: 18px;
+  cursor: pointer; position: relative; border-radius: var(--radius);
+  overflow: hidden; border: 1px solid var(--border);
+  background: rgba(255,255,255,.25);
   animation: card-in .5s ease both;
+  transition: box-shadow .4s, transform .15s ease-out;
+  transform-style: preserve-3d;
 }
-.gallery-item:hover { transform: scale(1.04); box-shadow: 0 16px 48px rgba(99,102,241,.15); }
+.gallery-item::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius);
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.15), transparent 60%);
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+.gallery-item:hover::before { opacity: 1; }
+.gallery-item:hover {
+  box-shadow: 0 20px 60px rgba(99,102,241,.2);
+}
 .gallery-item img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform .5s;
+  width: 100%; height: auto; display: block;
+  transition: transform .6s cubic-bezier(.2,1,.3,1), filter .4s;
+  filter: brightness(.95);
+  border-radius: var(--radius);
 }
-.gallery-item:hover img { transform: scale(1.12); }
+.gallery-item:hover img {
+  transform: scale(1.06); filter: brightness(1.05);
+}
+.gallery-item.broken {
+  min-height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--text-3);
+}
 .gallery-back { margin-bottom: 24px; }
 
 /* Lightbox */
@@ -506,7 +526,7 @@ a:hover { color: var(--accent-3); }
   .report-grid.all-shown .report-fold { grid-template-columns: 1fr; }
   .content { padding: 22px 18px; }
   .gate-box { padding: 34px 24px; }
-  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .gallery-grid { columns: 2 140px; column-gap: 10px; }
 }
 
 /* 滚动条 */
