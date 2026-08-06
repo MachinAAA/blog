@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>周报详情 · 个人博客</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="dot"></span>
+        <span>个人博客<span style="color:var(--text-3);font-weight:500">.dev</span></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">≡</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#top">首页</a>
+        <a href="index.html#tech">科技周报</a>
+        <a href="index.html#work">工作周报</a>
+        <a href="index.html#study">学习周报</a>
+        <a href="index.html#stock">股票周报</a>
+        <a href="index.html#projects">当前项目</a>
+        <a href="gallery.html">🖼 图库</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="detail">
+    <div class="wrap">
+      <a class="back" id="backLink" href="index.html">← 返回列表</a>
+      <div class="d-meta" id="detailMeta"></div>
+      <h1 id="detailTitle">加载中…</h1>
+      <div class="d-tags" id="detailTags"></div>
+      <article class="content" id="detailContent"></article>
+      <div class="actions" id="detailNav" style="margin-top:22px;gap:10px;"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© <span id="year"></span> 个人博客</span>
+      <span>built with html · css · vanilla js</span>
+    </div>
+  </footer>
+
+  <script src="data/tech-weekly.js"></script>
+  <script src="data/work-weekly.js"></script>
+  <script src="data/study-weekly.js"></script>
+  <script src="data/stock-weekly.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/report.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

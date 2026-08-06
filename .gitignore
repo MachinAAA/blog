@@ -1,0 +1,14 @@
+# 部署工具
+eo-cli/
+.deploy-tools/
+deploy/
+.edgeone/
+
+# 工作数据
+.workbuddy/
+
+# 本地部署脚本（含 token，不上传）
+deploy.sh
+
+# 图库中的说明文件
+gallery/*/README.md

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>图库 · 个人博客</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="dot"></span>
+        <span>个人博客<span style="color:var(--text-3);font-weight:500">.dev</span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">首页</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="gallery-gate">
+    <div class="gate-box">
+      <h2>🔒 请输入访问密码</h2>
+      <p class="lede">不同密码将进入不同图库</p>
+      <input type="password" id="pwInput" placeholder="输入密码..." autofocus />
+      <button class="btn primary" id="pwBtn">进入图库</button>
+      <div class="gate-error" id="pwError"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© <span id="year"></span> 个人博客</span>
+      <span>built with html · css · vanilla js</span>
+    </div>
+  </footer>
+
+  <script src="data/gallery.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    var cfg = window.GALLERY_CONFIG;
+
+    function go() {
+      var pw = document.getElementById("pwInput").value.trim();
+      var err = document.getElementById("pwError");
+      if (pw === cfg.gallery1.password) {
+        localStorage.setItem("gallery_key", "gallery1");
+        window.location.href = "gallery-view.html";
+      } else if (pw === cfg.gallery2.password) {
+        localStorage.setItem("gallery_key", "gallery2");
+        window.location.href = "gallery-view.html";
+      } else {
+        err.textContent = "密码错误，请重试";
+      }
+    }
+    document.getElementById("pwBtn").addEventListener("click", go);
+    document.getElementById("pwInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") go();
+    });
+  </script>
+</body>
+</html>

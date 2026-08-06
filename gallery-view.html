@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>图库 · 个人博客</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="dot"></span>
+        <span>个人博客<span style="color:var(--text-3);font-weight:500">.dev</span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">首页</a>
+        <a href="gallery.html">切换图库</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="gallery-view">
+    <div class="wrap">
+      <a class="back gallery-back" href="index.html">← 返回首页</a>
+      <h2 id="galleryTitle">加载中…</h2>
+      <p class="sub" id="gallerySub"></p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+      <div class="empty" id="galleryEmpty" style="display:none">
+        // 图库为空<br>在 gallery/ 目录下放入图片（001.webp, 002.webp…），<br>然后在 data/gallery.js 中更新 TOTAL 数字即可。
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© <span id="year"></span> 个人博客</span>
+      <span>built with html · css · vanilla js</span>
+    </div>
+  </footer>
+
+  <script src="data/gallery.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script>
+    var cfg = window.GALLERY_CONFIG;
+    var key = localStorage.getItem("gallery_key");
+    if (!key || !cfg[key]) { window.location.href = "gallery.html"; }
+
+    var info = cfg[key];
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("galleryTitle").textContent = info.label;
+    document.getElementById("gallerySub").textContent = "共 " + info.total + " 张";
+
+    var grid = document.getElementById("galleryGrid");
+    var empty = document.getElementById("galleryEmpty");
+
+    if (info.total === 0) {
+      empty.style.display = "";
+      grid.style.display = "none";
+    } else {
+      for (var i = 1; i <= info.total; i++) {
+        var src = info.dir + String(i).padStart(3, "0") + ".webp";
+        var item = document.createElement("div");
+        item.className = "gallery-item";
+        item.innerHTML = '<img src="' + src + '" alt="' + i + '" loading="lazy" />';
+        item.addEventListener("click", function(s) {
+          return function() { openLightbox(s); };
+        }(src));
+        grid.appendChild(item);
+      }
+    }
+
+    // Lightbox
+    function openLightbox(src) {
+      var lb = document.createElement("div");
+      lb.className = "lightbox";
+      lb.innerHTML = '<img src="' + src + '" />';
+      var close = document.createElement("div");
+      close.className = "lightbox-close";
+      close.textContent = "✕";
+      document.body.appendChild(lb);
+      document.body.appendChild(close);
+
+      function dismiss() {
+        document.body.removeChild(lb);
+        document.body.removeChild(close);
+      }
+      lb.addEventListener("click", dismiss);
+      close.addEventListener("click", dismiss);
+      document.addEventListener("keydown", function esc(e) {
+        if (e.key === "Escape") { dismiss(); document.removeEventListener("keydown", esc); }
+      });
+    }
+  </script>
+</body>
+</html>

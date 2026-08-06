@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人博客 · 科技 / 工作 / 学习 / 股票周报 / 当前项目</title>
+  <meta name="description" content="简约科技风个人博客：科技周报、工作周报、学习周报、股票周报与当前项目。" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <!-- 导航 -->
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="dot"></span>
+        <span>个人博客<span style="color:var(--text-3);font-weight:500">.dev</span></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">≡</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#top">首页</a>
+        <a href="#tech">科技周报</a>
+        <a href="#work">工作周报</a>
+        <a href="#study">学习周报</a>
+        <a href="#stock">股票周报</a>
+        <a href="#projects">当前项目</a>
+        <a href="gallery.html">🖼 图库</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">// PERSONAL BLOG &amp; WEEKLY LOGS</p>
+        <h1>记录技术，沉淀工作<br /><span class="grad">保持简洁，保持清晰。</span></h1>
+        <p class="lede">
+          这里汇总我的科技周报、工作周报、学习周报、股票周报与当前项目。内容以数据文件维护，
+          方便随时补充与归档。
+        </p>
+        <div class="meta">
+          <span>● 简约科技风</span>
+          <span>⌁ 数据驱动</span>
+          <span>◑ 响应式</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 科技周报 -->
+    <section class="section" id="tech">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">01</span> 科技周报</h2>
+          <span class="count" id="tech-count"></span>
+        </div>
+        <div class="report-list" id="tech-list"></div>
+      </div>
+    </section>
+
+    <!-- 个人工作周报 -->
+    <section class="section" id="work">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">02</span> 个人工作周报</h2>
+          <span class="count" id="work-count"></span>
+        </div>
+        <div class="report-list" id="work-list"></div>
+      </div>
+    </section>
+
+    <!-- 学习周报 -->
+    <section class="section" id="study">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">03</span> 学习周报</h2>
+          <span class="count" id="study-count"></span>
+        </div>
+        <div class="report-list" id="study-list"></div>
+      </div>
+    </section>
+
+    <!-- 股票周报 -->
+    <section class="section" id="stock">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">04</span> 股票周报</h2>
+          <span class="count" id="stock-count"></span>
+        </div>
+        <div class="report-list" id="stock-list"></div>
+      </div>
+    </section>
+
+    <!-- 当前项目 -->
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">05</span> 当前项目</h2>
+          <span class="count" id="projects-count"></span>
+        </div>
+        <div class="project-grid" id="projects-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© <span id="year"></span> 个人博客</span>
+      <span>built with html · css · vanilla js</span>
+    </div>
+  </footer>
+
+  <!-- 数据层（先于脚本加载，直接双击本文件也能运行） -->
+  <script src="data/tech-weekly.js"></script>
+  <script src="data/work-weekly.js"></script>
+  <script src="data/study-weekly.js"></script>
+  <script src="data/stock-weekly.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/home.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
