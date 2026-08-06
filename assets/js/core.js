@@ -198,7 +198,7 @@
   if (!canvas) return;
   var ctx = canvas.getContext("2d");
   var particles = [];
-  var PARTICLE_COUNT = 60;
+  var PARTICLE_COUNT = 80;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -226,7 +226,7 @@
   Particle.prototype.draw = function () {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(99,102,241," + this.opacity + ")";
+    ctx.fillStyle = "rgba(99,102,241," + (this.opacity * 0.6) + ")";
     ctx.fill();
   };
 
@@ -243,7 +243,7 @@
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
       ctx.lineTo(p2.x, p2.y);
-      ctx.strokeStyle = "rgba(99,102,241," + (0.08 * (1 - dist / maxDist)) + ")";
+      ctx.strokeStyle = "rgba(99,102,241," + (0.06 * (1 - dist / maxDist)) + ")";
       ctx.lineWidth = 0.5;
       ctx.stroke();
     }
@@ -256,7 +256,7 @@
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
       ctx.lineTo(mx, my);
-      ctx.strokeStyle = "rgba(6,182,212," + (0.12 * (1 - dist / maxDist)) + ")";
+      ctx.strokeStyle = "rgba(14,165,233," + (0.1 * (1 - dist / maxDist)) + ")";
       ctx.lineWidth = 0.6;
       ctx.stroke();
     }
