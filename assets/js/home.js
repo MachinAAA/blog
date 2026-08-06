@@ -46,12 +46,40 @@
         (type === "work" ? "work-weekly" : (type === "stock" ? "stock-weekly" : (type === "study" ? "study-weekly" : "tech-weekly"))) + '.js 添加第一条吧</div>';
       return;
     }
-    // 按日期倒序
-    list.slice().sort(function (a, b) {
+    // 按日期倒序排序
+    var sorted = list.slice().sort(function (a, b) {
       return String(b.date || "").localeCompare(String(a.date || ""));
-    }).forEach(function (item, i) {
-      box.appendChild(renderCard(item, type, i));
     });
+
+    // 最新一期直接渲染
+    box.appendChild(renderCard(sorted[0], type, 0));
+
+    if (sorted.length > 1) {
+      // 折叠区域：剩余周报打包
+      var fold = document.createElement("div");
+      fold.className = "report-fold";
+      for (var i = 1; i < sorted.length; i++) {
+        fold.appendChild(renderCard(sorted[i], type, i));
+      }
+      box.appendChild(fold);
+
+      // 折叠按钮
+      var toggle = document.createElement("button");
+      toggle.className = "report-toggle";
+      toggle.setAttribute("type", "button");
+      toggle.innerHTML = '<span class="toggle-icon">▼</span><span>展开全部 ' + (sorted.length - 1) + ' 期历史周报</span>';
+      toggle.addEventListener("click", function () {
+        var isOpen = box.classList.toggle("all-shown");
+        if (isOpen) {
+          toggle.innerHTML = '<span class="toggle-icon">▲</span><span>收起历史周报</span>';
+        } else {
+          toggle.innerHTML = '<span class="toggle-icon">▼</span><span>展开全部 ' + (sorted.length - 1) + ' 期历史周报</span>';
+          // 滚动到最新卡片位置
+          fold.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      box.appendChild(toggle);
+    }
   }
 
   function renderProjects() {
