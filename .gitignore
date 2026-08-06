@@ -3,6 +3,7 @@ eo-cli/
 .deploy-tools/
 .deploy-tmp/
 .edgeone/
+deploy/
 
 # 工作数据
 .workbuddy/
