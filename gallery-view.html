@@ -60,7 +60,8 @@
       grid.style.display = "none";
     } else {
       for (var i = 1; i <= info.total; i++) {
-        var src = info.dir + String(i).padStart(3, "0") + ".webp";
+        var ext = info.ext || "webp";
+        var src = info.dir + i + "." + ext;
         var item = document.createElement("div");
         item.className = "gallery-item";
         item.innerHTML = '<img src="' + src + '" alt="' + i + '" loading="lazy" />';
