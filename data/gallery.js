@@ -7,9 +7,9 @@
    ============================================================ */
 window.GALLERY_CONFIG = {
   gallery1: {
-    label: "1 号图库",
+    label: "图库",
     password: "750102",
-    total: 0, // ← 有多少张图片就填多少
+    total: 31, // ← 有多少张图片就填多少
     dir: "gallery/gallery1/"
   },
   gallery2: {
