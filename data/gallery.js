@@ -13,9 +13,9 @@ window.GALLERY_CONFIG = {
     dir: "gallery/gallery1/"
   },
   gallery2: {
-    label: "2 号图库",
+    label: "阿慧呀",
     password: "050308",
-    total: 0, // ← 图库 2 有多少张图片就填多少
+    total: 2, // ← 图库 2 有多少张图片就填多少
     dir: "gallery/gallery2/"
   }
 };
