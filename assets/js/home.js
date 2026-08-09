@@ -161,6 +161,8 @@
     initRandomRead();
     initQuotes();
     initUpdatesFeed();
+    initTimeline();
+    initFooterStats();
   });
 
   function renderAbout() {
@@ -307,5 +309,55 @@
         '<span class="update-title">' + C.escapeHtml(item.title) + "</span>";
       feed.appendChild(row);
     });
+  }
+
+  /* ========== 6. 归档时间线 ========== */
+  function initTimeline() {
+    var el = document.getElementById("timeline-el");
+    var count = document.getElementById("timeline-count");
+    if (!el) return;
+    var months = {};
+    var types = { tech:"科技", work:"工作", study:"学习", stock:"股票" };
+    Object.keys(types).forEach(function (t) {
+      var ds = C.getDataset(t);
+      ds.data.forEach(function (item) {
+        var m = String(item.date).slice(0, 7); // YYYY-MM
+        if (!months[m]) months[m] = [];
+        months[m].push({ type: t, typeName: types[t], id: item.id, title: item.title, date: item.date });
+      });
+    });
+    var keys = Object.keys(months).sort().reverse();
+    if (count) count.textContent = keys.length + " 个月";
+    keys.forEach(function (m) {
+      var group = document.createElement("div");
+      group.className = "timeline-month";
+      group.innerHTML = '<div class="timeline-label">' + m + '</div>';
+      var items = document.createElement("div");
+      items.className = "timeline-items";
+      months[m].forEach(function (item) {
+        var a = document.createElement("a");
+        a.className = "timeline-link";
+        a.href = "report.html?type=" + item.type + "&id=" + encodeURIComponent(item.id);
+        a.textContent = "[" + item.typeName + "] " + item.title;
+        items.appendChild(a);
+      });
+      group.appendChild(items);
+      el.appendChild(group);
+    });
+  }
+
+  /* ========== 7. 页脚统计 ========== */
+  function initFooterStats() {
+    var aEl = document.getElementById("footer-articles");
+    var dEl = document.getElementById("footer-days");
+    if (!aEl) return;
+    var total = 0;
+    ["tech","work","study","stock"].forEach(function (t) {
+      total += (C.getDataset(t).data || []).length;
+    });
+    aEl.textContent = total + " 篇文章";
+    var start = new Date("2026-07-28");
+    var days = Math.max(1, Math.floor((Date.now() - start.getTime()) / 86400000));
+    dEl.textContent = "已运行 " + days + " 天";
   }
 })();

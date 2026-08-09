@@ -138,6 +138,17 @@ a:hover { color: var(--accent-3); }
   padding: 7px 16px; border-radius: 999px; backdrop-filter: blur(12px);
 }
 
+/* ==================== PC 侧边浮动装饰 ==================== */
+.side-decorations {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.side-shape {
+  position: absolute; transition: transform .1s ease-out;
+  filter: blur(2px);
+}
+@media (max-width: 899px) { .side-decorations { display: none; } }
+
 /* ==================== 滚动进度条 ==================== */
 .scroll-progress {
   position: fixed; top: 0; left: 0; width: 100%; height: 3px;
@@ -719,12 +730,96 @@ a:hover { color: var(--accent-3); }
 }
 .lightbox-close:hover { background: rgba(255,255,255,.15); }
 
+/* ==================== 归档时间线 ==================== */
+.timeline {
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative; padding-left: 28px;
+}
+.timeline::before {
+  content: ""; position: absolute; left: 10px; top: 8px; bottom: 8px;
+  width: 2px; background: linear-gradient(to bottom, var(--accent-2), var(--accent-3), var(--accent));
+  border-radius: 1px;
+}
+.timeline-month {
+  position: relative;
+}
+.timeline-month::before {
+  content: ""; position: absolute; left: -24px; top: 10px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent-2); border: 2px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent-2);
+}
+.timeline-label {
+  font-family: var(--font-mono); font-size: 12px; color: var(--accent-2);
+  font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;
+}
+.timeline-items {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.timeline-link {
+  font-size: 13px; color: var(--text-2); background: var(--surface-card);
+  border: 1px solid var(--border); padding: 6px 14px; border-radius: 999px;
+  text-decoration: none; backdrop-filter: blur(10px);
+  transition: all .25s; font-weight: 500;
+}
+.timeline-link:hover {
+  background: var(--accent-soft); color: var(--accent); border-color: var(--accent);
+  text-decoration: none; transform: translateY(-2px);
+}
+
+/* ==================== 社交链接 ==================== */
+.social-section {
+  padding: 0 0 60px; text-align: center;
+}
+.social-section h3 {
+  font-size: 22px; font-weight: 700; margin: 0 0 24px;
+  color: var(--text);
+}
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.social-card {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 20px;
+  backdrop-filter: blur(16px); text-decoration: none;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.social-card:hover {
+  border-color: var(--accent-2); transform: translateY(-4px);
+  box-shadow: var(--shadow-hover); text-decoration: none;
+}
+.social-icon { font-size: 32px; }
+.social-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.social-handle { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
+
 /* ==================== 页脚 ==================== */
 .footer {
-  border-top: 1px solid var(--border); padding: 28px 0 48px;
+  border-top: 1px solid var(--border); padding: 36px 0 48px;
   color: var(--text-3); font-size: 13px; font-family: var(--font-mono);
+  background: linear-gradient(to top, rgba(99,102,241,.03), transparent);
 }
-.footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.footer .wrap {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 16px; align-items: center;
+}
+.footer-brand {
+  display: flex; align-items: center; gap: 10px; font-weight: 700;
+  color: var(--text); font-size: 16px;
+}
+.footer-brand .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gradient-2);
+}
+.footer-dot-dev { color: var(--text-3); font-weight: 500; }
+.footer-stats {
+  display: flex; gap: 20px; color: var(--text-2);
+}
+.footer-copy {
+  display: flex; gap: 16px; color: var(--text-3);
+}
 
 /* ==================== 响应式 ==================== */
 @media (max-width: 720px) {
@@ -1228,6 +1323,40 @@ a:hover { color: var(--accent-3); }
   border: 2px solid #000; background: #ffd32a; color: #000;
   font-weight: 700;
 }
+
+/* ====== 时间线 ====== */
+.neo-brutalist .timeline::before { background: #000; }
+.neo-brutalist .timeline-link {
+  border: 2px solid #000; border-radius: 0; backdrop-filter: none;
+  background: #fff; color: #000; font-weight: 700;
+}
+.neo-brutalist .timeline-link:hover {
+  background: #ffd32a; color: #000; border-color: #000;
+}
+
+/* ====== 社交 ====== */
+.neo-brutalist .social-card {
+  border: 3px solid #000; border-radius: 0; backdrop-filter: none;
+  background: #fff; box-shadow: 4px 4px 0 #000;
+}
+.neo-brutalist .social-card:nth-child(odd) { transform: rotate(.6deg); }
+.neo-brutalist .social-card:nth-child(even) { transform: rotate(-.5deg); }
+.neo-brutalist .social-card:hover {
+  transform: rotate(0deg) translate(-3px,-3px) !important;
+  box-shadow: 8px 8px 0 #000;
+}
+.neo-brutalist .social-name { color: #000; }
+.neo-brutalist .social-handle { color: #555; }
+
+/* ====== 页脚 ====== */
+.neo-brutalist .footer {
+  border-top: 5px solid #000; background: #000; color: #ffd32a;
+  font-weight: 700; padding: 30px 0 50px;
+}
+.neo-brutalist .footer-brand { color: #ffd32a; }
+.neo-brutalist .footer-dot-dev { color: rgba(255,255,255,.4); }
+.neo-brutalist .footer-stats { color: rgba(255,255,255,.6); }
+.neo-brutalist .footer-copy { color: rgba(255,255,255,.4); }
 
 /* ====== 通用 ====== */
 .neo-brutalist .empty {

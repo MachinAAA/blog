@@ -357,3 +357,56 @@ window.typewriter = function (el, texts, speed, pause) {
   }
   tick();
 };
+
+/* ============================================================
+   PC 侧边浮动装饰 — 彩色几何体跟随鼠标和滚动
+   ============================================================ */
+(function () {
+  "use strict";
+  if (window.innerWidth < 900) return;
+  var container = document.createElement("div");
+  container.className = "side-decorations";
+  document.body.appendChild(container);
+
+  var shapes = [
+    { type: "circle", color: "#6366f1", size: 60, x: 4, y: 15, speed: 0.3 },
+    { type: "square", color: "#a855f7", size: 40, x: 2, y: 35, speed: 0.5, rotate: 15 },
+    { type: "circle", color: "#0ea5e9", size: 50, x: 96, y: 20, speed: 0.4 },
+    { type: "square", color: "#f472b6", size: 35, x: 94, y: 50, speed: 0.6, rotate: 25 },
+    { type: "circle", color: "#6366f1", size: 45, x: 3, y: 65, speed: 0.35 },
+    { type: "square", color: "#22d3ee", size: 55, x: 95, y: 75, speed: 0.45, rotate: -10 },
+    { type: "circle", color: "#a855f7", size: 38, x: 96, y: 42, speed: 0.5 },
+    { type: "square", color: "#f472b6", size: 48, x: 4, y: 88, speed: 0.55, rotate: 20 },
+  ];
+
+  shapes.forEach(function (s) {
+    var el = document.createElement("div");
+    el.className = "side-shape side-shape-" + s.type;
+    el.style.cssText =
+      "left:" + s.x + "%;top:" + s.y + "%;width:" + s.size + "px;height:" + s.size + "px;" +
+      "background:" + s.color + ";opacity:0.12;" +
+      (s.rotate ? "transform:rotate(" + s.rotate + "deg);" : "");
+    el.setAttribute("data-speed", s.speed);
+    if (s.type === "circle") el.style.borderRadius = "50%";
+    container.appendChild(el);
+  });
+
+  var mx = window.innerWidth/2, my = window.innerHeight/2;
+  window.addEventListener("mousemove", function (e) { mx = e.clientX; my = e.clientY; });
+
+  function parallax() {
+    var sy = window.scrollY;
+    var els = container.children;
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var speed = parseFloat(el.getAttribute("data-speed"));
+      var baseX = parseFloat(el.style.left);
+      var baseY = parseFloat(el.style.top);
+      var ox = (mx - window.innerWidth/2) * speed * 0.02;
+      var oy = (my - window.innerHeight/2) * speed * 0.02 + sy * speed * 0.03;
+      el.style.transform = "translate(" + ox + "px," + oy + "px)";
+    }
+    requestAnimationFrame(parallax);
+  }
+  requestAnimationFrame(parallax);
+})();
