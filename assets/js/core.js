@@ -276,3 +276,23 @@
   }
   animate();
 })();
+
+/* ============================================================
+   风格切换：默认玻璃态 ↔ 新粗野主义
+   ============================================================ */
+(function () {
+  "use strict";
+  var toggleBtn = document.getElementById("styleToggle");
+  if (!toggleBtn) return;
+  var STYLE_KEY = "blog_style";
+
+  // 读取持久化偏好
+  if (localStorage.getItem(STYLE_KEY) === "neo") {
+    document.body.classList.add("neo-brutalist");
+  }
+
+  toggleBtn.addEventListener("click", function () {
+    var neo = document.body.classList.toggle("neo-brutalist");
+    localStorage.setItem(STYLE_KEY, neo ? "neo" : "glass");
+  });
+})();
