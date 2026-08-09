@@ -71,6 +71,56 @@
       </div>
     </section>
 
+    <!-- 信息面板：时钟+计时器+推荐 -->
+    <section class="info-panels">
+      <div class="wrap">
+        <div class="panel-grid">
+          <!-- 实时时钟 -->
+          <div class="panel panel-clock">
+            <div class="panel-clock-inner">
+              <div class="clock-time" id="live-clock">00:00:00</div>
+              <div class="clock-date" id="live-date"></div>
+              <div class="clock-zone">北京时间</div>
+            </div>
+          </div>
+          <!-- 网站计时器 -->
+          <div class="panel panel-age">
+            <div class="panel-icon">⏳</div>
+            <div class="panel-num" id="site-age">0</div>
+            <div class="panel-label">天前上线</div>
+          </div>
+          <!-- 随机推荐 -->
+          <div class="panel panel-random" id="random-read">
+            <div class="panel-icon">🎲</div>
+            <div class="panel-label-sm">今天推荐你读</div>
+            <div class="random-title" id="random-title">—</div>
+            <a class="random-link" id="random-link" href="#">去看看 →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 语录墙 -->
+    <section class="quotes-section">
+      <div class="wrap">
+        <div class="quote-box" id="quote-box">
+          <div class="quote-text" id="quote-text"></div>
+          <div class="quote-author" id="quote-author"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最近更新流 -->
+    <section class="section updates-section" id="updates">
+      <div class="wrap">
+        <div class="section-head">
+          <h2><span class="idx">📡</span> 最近更新</h2>
+          <span class="count" id="updates-count"></span>
+        </div>
+        <div class="updates-feed" id="updates-feed"></div>
+      </div>
+    </section>
+
     <!-- 科技周报 -->
     <section class="section" id="tech">
       <div class="wrap">

@@ -154,6 +154,13 @@
         "永远在学习的路上。"
       ], 100, 2500);
     }
+
+    // 5个新模块
+    initClock();
+    initSiteAge();
+    initRandomRead();
+    initQuotes();
+    initUpdatesFeed();
   });
 
   function renderAbout() {
@@ -202,5 +209,103 @@
         return '<span class="tag tag-lg">' + C.escapeHtml(t) + '</span>';
       }).join("");
     }
+  }
+
+  /* ========== 1. 实时时钟 ========== */
+  function initClock() {
+    var tEl = document.getElementById("live-clock");
+    var dEl = document.getElementById("live-date");
+    if (!tEl) return;
+    function tick() {
+      var n = new Date();
+      tEl.textContent =
+        String(n.getHours()).padStart(2,"0") + ":" +
+        String(n.getMinutes()).padStart(2,"0") + ":" +
+        String(n.getSeconds()).padStart(2,"0");
+      var days = ["周日","周一","周二","周三","周四","周五","周六"];
+      dEl.textContent = n.getFullYear() + "年" + (n.getMonth()+1) + "月" + n.getDate() + "日 " + days[n.getDay()];
+    }
+    tick(); setInterval(tick, 1000);
+  }
+
+  /* ========== 2. 网站运行天数 ========== */
+  function initSiteAge() {
+    var el = document.getElementById("site-age");
+    if (!el) return;
+    // 从首次 GitHub 提交日期算起 (2026-02-14, 账号创建日或网站创建日)
+    // 使用本地缓存的日期或固定日期
+    var start = new Date("2026-07-28");
+    var days = Math.floor((Date.now() - start.getTime()) / 86400000);
+    el.textContent = Math.max(1, days);
+  }
+
+  /* ========== 3. 随机文章推荐 ========== */
+  function initRandomRead() {
+    var titleEl = document.getElementById("random-title");
+    var linkEl = document.getElementById("random-link");
+    if (!titleEl) return;
+    var allItems = [];
+    ["tech","work","study","stock"].forEach(function (t) {
+      var ds = C.getDataset(t);
+      ds.data.forEach(function (item) {
+        allItems.push({ type: t, id: item.id, title: item.title });
+      });
+    });
+    if (!allItems.length) return;
+    var pick = allItems[Math.floor(Math.random() * allItems.length)];
+    titleEl.textContent = pick.title;
+    linkEl.href = "report.html?type=" + pick.type + "&id=" + encodeURIComponent(pick.id);
+  }
+
+  /* ========== 4. 语录墙 ========== */
+  function initQuotes() {
+    var textEl = document.getElementById("quote-text");
+    var authEl = document.getElementById("quote-author");
+    if (!textEl) return;
+    var quotes = [
+      { t: "代码写得好，Bug 没烦恼。", a: "—— 程序员的自我修养" },
+      { t: "保持简洁，保持清晰。", a: "—— 本站座右铭" },
+      { t: "最好的投资是投资自己。", a: "—— 巴菲特" },
+      { t: "Stay hungry, stay foolish.", a: "—— Steve Jobs" },
+      { t: "Talk is cheap. Show me the code.", a: "—— Linus Torvalds" },
+      { t: "今天的努力，明天的实力。", a: "" },
+      { t: "技术改变世界，代码创造未来。", a: "" },
+      { t: "先完成，再完美。", a: "—— 敏捷宣言" }
+    ];
+    function show() {
+      var q = quotes[Math.floor(Math.random() * quotes.length)];
+      textEl.textContent = q.t;
+      authEl.textContent = q.a;
+    }
+    show(); setInterval(show, 8000);
+  }
+
+  /* ========== 5. 最近更新流 ========== */
+  function initUpdatesFeed() {
+    var feed = document.getElementById("updates-feed");
+    var count = document.getElementById("updates-count");
+    if (!feed) return;
+    var allItems = [];
+    var types = { tech:"科技周报", work:"工作周报", study:"学习周报", stock:"股票周报" };
+    Object.keys(types).forEach(function (t) {
+      var ds = C.getDataset(t);
+      ds.data.forEach(function (item) {
+        allItems.push({ type: t, typeName: types[t], id: item.id, title: item.title, date: item.date });
+      });
+    });
+    // 按日期倒序取前 5 条
+    allItems.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var latest = allItems.slice(0, 5);
+    if (count) count.textContent = latest.length + " 条";
+    latest.forEach(function (item, i) {
+      var row = document.createElement("a");
+      row.className = "update-row";
+      row.href = "report.html?type=" + item.type + "&id=" + encodeURIComponent(item.id);
+      row.innerHTML =
+        '<span class="update-date">' + C.escapeHtml(item.date) + "</span>" +
+        '<span class="update-badge">' + C.escapeHtml(item.typeName) + "</span>" +
+        '<span class="update-title">' + C.escapeHtml(item.title) + "</span>";
+      feed.appendChild(row);
+    });
   }
 })();
