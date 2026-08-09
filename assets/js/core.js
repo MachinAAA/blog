@@ -296,3 +296,64 @@
     localStorage.setItem(STYLE_KEY, neo ? "neo" : "glass");
   });
 })();
+
+/* ============================================================
+   滚动进度条
+   ============================================================ */
+(function () {
+  "use strict";
+  var bar = document.createElement("div");
+  bar.className = "scroll-progress";
+  bar.innerHTML = '<div class="scroll-progress-fill"></div>';
+  document.body.appendChild(bar);
+  var fill = bar.firstChild;
+  window.addEventListener("scroll", function () {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0;
+    fill.style.width = pct + "%";
+  });
+})();
+
+/* ============================================================
+   回到顶部按钮
+   ============================================================ */
+(function () {
+  "use strict";
+  var btn = document.createElement("button");
+  btn.className = "back-top";
+  btn.innerHTML = "↑";
+  btn.title = "回到顶部";
+  btn.setAttribute("aria-label", "回到顶部");
+  document.body.appendChild(btn);
+  window.addEventListener("scroll", function () {
+    btn.classList.toggle("visible", window.scrollY > 400);
+  });
+  btn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+
+/* ============================================================
+   打字机效果
+   ============================================================ */
+window.typewriter = function (el, texts, speed, pause) {
+  speed = speed || 120;
+  pause = pause || 2000;
+  var ti = 0, ci = 0, forward = true;
+  function tick() {
+    if (!el) return;
+    var t = texts[ti % texts.length];
+    if (forward) {
+      el.textContent = t.slice(0, ci + 1);
+      ci++;
+      if (ci >= t.length) { forward = false; setTimeout(tick, pause); return; }
+      setTimeout(tick, speed);
+    } else {
+      el.textContent = t.slice(0, ci);
+      ci--;
+      if (ci < 0) { forward = true; ti++; setTimeout(tick, speed * 3); return; }
+      setTimeout(tick, speed / 3);
+    }
+  }
+  tick();
+};

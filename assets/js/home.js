@@ -141,5 +141,66 @@
     });
     var pc = document.getElementById("projects-count");
     if (pc) pc.textContent = (window.PROJECTS || []).length + " 个";
+
+    // 关于我 - 统计
+    renderAbout();
+    // 打字机效果
+    var twEl = document.getElementById("tw-text");
+    if (twEl && window.typewriter) {
+      window.typewriter(twEl, [
+        "专注于 AI、前端工程与金融量化。",
+        "用代码记录思考，用周报沉淀成长。",
+        "保持简洁，保持清晰。",
+        "永远在学习的路上。"
+      ], 100, 2500);
+    }
   });
+
+  function renderAbout() {
+    var box = document.getElementById("about-stats");
+    if (!box) return;
+    var allTypes = ["tech", "work", "study", "stock"];
+    var totalArticles = 0;
+    var allTags = {};
+    allTypes.forEach(function (t) {
+      var ds = C.getDataset(t);
+      totalArticles += ds.data.length;
+      ds.data.forEach(function (item) {
+        (item.tags || []).forEach(function (tag) {
+          allTags[tag] = (allTags[tag] || 0) + 1;
+        });
+      });
+    });
+    var topTags = Object.keys(allTags)
+      .sort(function (a, b) { return allTags[b] - allTags[a]; })
+      .slice(0, 8);
+    var sections = allTypes.length;
+    var projects = (window.PROJECTS || []).length;
+
+    box.innerHTML =
+      '<div class="stat-card">' +
+        '<span class="stat-num">' + totalArticles + '</span>' +
+        '<span class="stat-label">篇文章</span>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<span class="stat-num">' + sections + '</span>' +
+        '<span class="stat-label">个板块</span>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<span class="stat-num">' + projects + '</span>' +
+        '<span class="stat-label">个项目</span>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<span class="stat-num">' + Object.keys(allTags).length + '</span>' +
+        '<span class="stat-label">个标签</span>' +
+      '</div>';
+
+    // 热门标签
+    var tagWall = document.getElementById("tag-wall");
+    if (tagWall && topTags.length) {
+      tagWall.innerHTML = topTags.map(function (t) {
+        return '<span class="tag tag-lg">' + C.escapeHtml(t) + '</span>';
+      }).join("");
+    }
+  }
 })();
