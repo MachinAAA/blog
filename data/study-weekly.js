@@ -12,6 +12,77 @@
    ============================================================ */
 window.STUDY_WEEKLY = [
   {
+    id: "2026-08-08",
+    date: "2026-08-08",
+    title: "学习周报 #02 · Godot 4 引擎核心与 GDScript 实践",
+    tags: ["Godot", "游戏开发", "GDScript"],
+    summary:
+      "通过 CarRoad 小游戏系统学习 Godot 4 引擎，掌握场景系统、三类物理节点、碰撞层与信号机制，熟练运用 Input.get_vector、move_and_slide、queue_free 等核心 API。",
+    content: `## 本周学习内容
+
+> 通过 CarRoad 小游戏系统学习 Godot 4 引擎，掌握场景系统、物理节点与 GDScript 核心 API。
+
+## 一、节点与场景
+
+- **场景即类**：每个 .tscn 文件是可复用组件，可独立运行、实例化、继承
+- **三类物理节点**：CharacterBody2D（可碰撞移动）、Area2D（区域检测）、StaticBody2D（静态阻挡）
+- **y_sort_enabled**：俯视角按 Y 坐标排序渲染，实现正确遮挡
+- **CanvasLayer**：UI 层独立于游戏世界坐标，不受相机影响
+- **Marker2D**：纯标记节点，用于定义生成点
+
+## 二、核心 GDScript API
+
+| 方法 / 函数 | 作用 |
+|------|------|
+| preload(path) | 类加载时预加载资源，避免运行时重复加载 |
+| .instantiate() | 实例化 PackedScene，类似 new 一个对象 |
+| Input.get_vector() | 一行获取四方向输入，返回单位向量 |
+| move_and_slide() | CharacterBody2D 标准移动，自动处理碰撞 |
+| .pick_random() | 数组随机取元素，替代 randi() % size |
+| queue_free() | 安全销毁节点，帧结束后执行 |
+| call_deferred() | 延迟到安全帧执行，物理回调中切场景必用 |
+| $NodePath | get_node() 语法糖，路径快捷访问 |
+| str() | 类型转字符串 |
+
+## 三、碰撞层与信号
+
+- **collision_layer / collision_mask**：用位掩码加法组合多层（1 加 4 加 8 等于 13）
+- **信号机制**：观察者模式，编辑器静态绑定 + 代码 connect 动态绑定
+- **Autoload 单例**：注册后全局访问，跨场景共享状态
+
+## 四、代码实践
+
+\`\`\`gdscript
+extends CharacterBody2D
+
+var speed: int = 150
+
+func _physics_process(_delta: float) -> void:
+    var direction = Input.get_vector('left', 'right', 'up', 'down')
+    velocity = direction * speed
+    move_and_slide()
+\`\`\`
+
+## 五、踩坑记录
+
+| 问题 | 解决 |
+|------|------|
+| 物理回调中切换场景报错 | call_deferred 延迟到安全帧 |
+| _process 手动移动抖动 | 乘 delta 保证帧率无关 |
+| 大量车辆累积卡顿 | VisibleOnScreenNotifier2D 检测屏幕外自动清理 |
+
+## 下周计划
+
+- Godot 动画系统与 Tween 补间
+- TileMap 瓦片地图
+- 打包导出到各平台
+
+## 学习资源
+
+- Godot 官方文档（GDScript 基础）
+- 节点与场景系统官方教程`,
+  },
+  {
     id: "2026-08-04",
     date: "2026-08-04",
     title: "学习周报 #01 · 数据结构与算法 · 二叉树专题",
